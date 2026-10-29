@@ -1,0 +1,56 @@
+type = "static-library"
+name = "openssl"
+standards = ["C11"]
+excludes = ["crypto/LPdir_nyi.c", "crypto/LPdir_unix.c", "crypto/LPdir_vms.c", "crypto/LPdir_win.c", "crypto/LPdir_win32.c", "crypto/LPdir_wince.c", "crypto/des/ncbc_enc.c", "engines/e_afalg_err.c", "engines/e_capi_err.c", "ms/applink.c", "providers/implementations/macs/blake2_mac_impl.c"]
+
+[includes]
+private = [".", "providers/common/include", "providers/implementations/include", "providers/fips/include"]
+
+[defines]
+private = ["OPENSSL_BUILDING_OPENSSL", "STATIC_LEGACY", "ENGINESDIR=\"\"", "MODULESDIR=\"\""]
+
+[windows]
+libraries = ["ws2_32", "crypt32", "bcrypt", "advapi32", "user32"]
+
+[windows.defines]
+private = ["WIN32_LEAN_AND_MEAN", "NOMINMAX", "UNICODE", "_UNICODE", "_CRT_SECURE_NO_WARNINGS", "_WINSOCK_DEPRECATED_NO_WARNINGS", "OPENSSLDIR=\"C:/Program Files/Common Files/SSL\""]
+
+[linux]
+libraries = ["pthread", "dl"]
+
+[linux.defines]
+private = ["_GNU_SOURCE", "OPENSSLDIR=\"/etc/ssl\""]
+
+[macos]
+libraries = ["pthread"]
+excludes = ["engines/e_afalg.c", "providers/implementations/storemgmt/winstore_store.c"]
+
+[macos.defines]
+private = ["_DARWIN_C_SOURCE", "OPENSSLDIR=\"/etc/ssl\""]
+
+[linux.aarch64]
+excludes = ["providers/implementations/storemgmt/winstore_store.c"]
+
+[linux.aarch64.includes]
+public = ["config/linux-aarch64"]
+
+[linux.x86_64]
+excludes = ["providers/implementations/storemgmt/winstore_store.c"]
+
+[linux.x86_64.includes]
+public = ["config/linux-x86_64"]
+
+[macos.includes]
+public = ["config/macos"]
+
+[windows.aarch64]
+excludes = ["engines/e_afalg.c"]
+
+[windows.aarch64.includes]
+public = ["config/windows-aarch64"]
+
+[windows.x86_64]
+excludes = ["engines/e_afalg.c"]
+
+[windows.x86_64.includes]
+public = ["config/windows-x86_64"]
